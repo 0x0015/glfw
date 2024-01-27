@@ -24,10 +24,10 @@
 //    distribution.
 //
 //========================================================================
+// It is fine to use C99 in this file because it will not be built with VS
+//========================================================================
 
 #include "internal.h"
-
-#if defined(_GLFW_X11)
 
 #include <stdlib.h>
 #include <string.h>
@@ -37,7 +37,6 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
-#include <assert.h>
 
 
 // Translate the X11 KeySyms for a key to a GLFW key code
@@ -1096,9 +1095,8 @@ static int errorHandler(Display *display, XErrorEvent* event)
 //
 void _glfwGrabErrorHandlerX11(void)
 {
-    assert(_glfw.x11.errorHandler == NULL);
     _glfw.x11.errorCode = Success;
-    _glfw.x11.errorHandler = XSetErrorHandler(errorHandler);
+    XSetErrorHandler(errorHandler);
 }
 
 // Clears the X error handler callback
@@ -1107,8 +1105,7 @@ void _glfwReleaseErrorHandlerX11(void)
 {
     // Synchronize to make sure all commands are processed
     XSync(_glfw.x11.display, False);
-    XSetErrorHandler(_glfw.x11.errorHandler);
-    _glfw.x11.errorHandler = NULL;
+    XSetErrorHandler(NULL);
 }
 
 // Reports the specified error, appending information about the last X error
@@ -1182,7 +1179,7 @@ GLFWbool _glfwConnectX11(int platformID, _GLFWplatform* platform)
         _glfwGetKeyScancodeX11,
         _glfwSetClipboardStringX11,
         _glfwGetClipboardStringX11,
-#if defined(GLFW_BUILD_LINUX_JOYSTICK)
+#if defined(__linux__)
         _glfwInitJoysticksLinux,
         _glfwTerminateJoysticksLinux,
         _glfwPollJoystickLinux,
@@ -1633,7 +1630,6 @@ void _glfwTerminateX11(void)
         _glfw.x11.xi.handle = NULL;
     }
 
-    _glfwTerminateOSMesa();
     // NOTE: These need to be unloaded after XCloseDisplay, as they register
     //       cleanup callbacks that get called by that function
     _glfwTerminateEGL();
@@ -1651,6 +1647,4 @@ void _glfwTerminateX11(void)
         close(_glfw.x11.emptyEventPipe[1]);
     }
 }
-
-#endif // _GLFW_X11
 

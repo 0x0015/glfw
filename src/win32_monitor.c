@@ -24,10 +24,10 @@
 //    distribution.
 //
 //========================================================================
+// Please use C89 style variable declarations in this file because VS 2010
+//========================================================================
 
 #include "internal.h"
-
-#if defined(_GLFW_WIN32)
 
 #include <stdlib.h>
 #include <string.h>
@@ -544,6 +544,4 @@ GLFWAPI const char* glfwGetWin32Monitor(GLFWmonitor* handle)
     _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
     return monitor->win32.publicDisplayName;
 }
-
-#endif // _GLFW_WIN32
 
