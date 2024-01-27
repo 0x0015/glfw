@@ -102,6 +102,7 @@ if (GLFW_BUILD_WAYLAND)
     generate_wayland_protocol("pointer-constraints-unstable-v1.xml")
     generate_wayland_protocol("relative-pointer-unstable-v1.xml")
     generate_wayland_protocol("xdg-decoration-unstable-v1.xml")
+    generate_wayland_protocol("wlr-layer-shell-unstable-v1.xml")
 endif()
 
 if (WIN32 AND GLFW_BUILD_SHARED_LIBRARY)

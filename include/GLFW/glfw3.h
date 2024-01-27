@@ -1127,6 +1127,12 @@ extern "C" {
 #define GLFW_WAYLAND_APP_ID         0x00026001
 /*! @} */
 
+/*! @brief Wayland specific
+ *  [window hint](@ref GLFW_WAYLAND_SHELL_LAYER_hint).
+ */
+#define GLFW_WAYLAND_SHELL_LAYER    0x00026002
+/*! @} */
+
 #define GLFW_NO_API                          0
 #define GLFW_OPENGL_API             0x00030001
 #define GLFW_OPENGL_ES_API          0x00030002

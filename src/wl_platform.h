@@ -129,6 +129,7 @@ struct wl_output;
 #define xdg_surface_interface _glfw_xdg_surface_interface
 #define xdg_toplevel_interface _glfw_xdg_toplevel_interface
 #define xdg_wm_base_interface _glfw_xdg_wm_base_interface
+#define zwlr_layer_surface_v1_interface _glfw_zwlr_layer_surface_v1_interface
 
 #define GLFW_WAYLAND_WINDOW_STATE         _GLFWwindowWayland  wl;
 #define GLFW_WAYLAND_LIBRARY_WINDOW_STATE _GLFWlibraryWayland wl;
@@ -362,6 +363,7 @@ typedef struct _GLFWwindowWayland
     GLFWbool                    hovered;
     GLFWbool                    transparent;
     struct wl_surface*          surface;
+    struct zwlr_layer_surface_v1* layer_surface;
     struct wl_callback*         callback;
 
     struct {
@@ -434,6 +436,7 @@ typedef struct _GLFWlibraryWayland
     struct zwp_relative_pointer_manager_v1* relativePointerManager;
     struct zwp_pointer_constraints_v1*      pointerConstraints;
     struct zwp_idle_inhibit_manager_v1*     idleInhibitManager;
+    struct zwlr_layer_shell_v1*             layerShell;
 
     _GLFWofferWayland*          offers;
     unsigned int                offerCount;

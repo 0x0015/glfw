@@ -421,6 +421,7 @@ struct _GLFWwndconfig
     } win32;
     struct {
         char      appId[256];
+        int       shellLayer;
     } wl;
 };
 

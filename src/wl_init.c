@@ -47,6 +47,7 @@
 #include "relative-pointer-unstable-v1-client-protocol.h"
 #include "pointer-constraints-unstable-v1-client-protocol.h"
 #include "idle-inhibit-unstable-v1-client-protocol.h"
+#include "wlr-layer-shell-unstable-v1-client-protocol.h"
 
 // NOTE: Versions of wayland-scanner prior to 1.17.91 named every global array of
 //       wl_interface pointers 'types', making it impossible to combine several unmodified
@@ -79,6 +80,10 @@
 
 #define types _glfw_idle_inhibit_types
 #include "idle-inhibit-unstable-v1-client-protocol-code.h"
+#undef types
+
+#define types _glfw_layer_shell_types
+#include "wlr-layer-shell-unstable-v1-client-protocol-code.h"
 #undef types
 
 static void wmBaseHandlePing(void* userData,
@@ -175,6 +180,13 @@ static void registryHandleGlobal(void* userData,
         _glfw.wl.idleInhibitManager =
             wl_registry_bind(registry, name,
                              &zwp_idle_inhibit_manager_v1_interface,
+                             1);
+    }
+    else if (strcmp(interface, "zwlr_layer_shell_v1") == 0)
+    {
+        _glfw.wl.layerShell =
+            wl_registry_bind(registry, name,
+                             &zwlr_layer_shell_v1_interface,
                              1);
     }
 }
@@ -929,6 +941,8 @@ void _glfwTerminateWayland(void)
         zwp_pointer_constraints_v1_destroy(_glfw.wl.pointerConstraints);
     if (_glfw.wl.idleInhibitManager)
         zwp_idle_inhibit_manager_v1_destroy(_glfw.wl.idleInhibitManager);
+    if (_glfw.wl.layerShell)
+        zwlr_layer_shell_v1_destroy(_glfw.wl.layerShell);
     if (_glfw.wl.registry)
         wl_registry_destroy(_glfw.wl.registry);
     if (_glfw.wl.display)
