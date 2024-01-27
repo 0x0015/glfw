@@ -1162,6 +1162,15 @@ GLFWbool _glfwConnectWayland(int platformID, _GLFWplatform* platform)
     return GLFW_TRUE;
 }
 
+GLFWbool getScaleSetting(void)
+{
+    const char* scaleEnvString = getenv("GLFW_SCALE_TO_MONITOR");
+    if (scaleEnvString)
+        return GLFW_TRUE;
+    else
+        return GLFW_FALSE;
+}
+
 int _glfwInitWayland(void)
 {
     const char *cursorTheme;
@@ -1169,6 +1178,8 @@ int _glfwInitWayland(void)
     char *cursorSizeEnd;
     long cursorSizeLong;
     int cursorSize;
+
+    _glfw.wl.scaleToMonitor = getScaleSetting();
 
     _glfw.wl.client.display_flush = (PFN_wl_display_flush)
         _glfwPlatformGetModuleSymbol(_glfw.wl.client.handle, "wl_display_flush");
@@ -1384,6 +1395,7 @@ int _glfwInitWayland(void)
 
     return GLFW_TRUE;
 }
+
 
 void _glfwTerminateWayland(void)
 {

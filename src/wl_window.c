@@ -992,10 +992,11 @@ void _glfwSetWindowPosWayland(_GLFWwindow* window, int xpos, int ypos)
 
 void _glfwGetWindowSizeWayland(_GLFWwindow* window, int* width, int* height)
 {
+    float scale = _glfw.wl.scaleToMonitor ? window->wl.scale : 1;
     if (width)
-        *width = window->wl.width;
+        *width = window->wl.width * scale;
     if (height)
-        *height = window->wl.height;
+        *height = window->wl.height * scale;
 }
 
 void _glfwSetWindowSizeWayland(_GLFWwindow* window, int width, int height)
@@ -1032,10 +1033,11 @@ void _glfwSetWindowAspectRatioWayland(_GLFWwindow* window, int numer, int denom)
 void _glfwGetFramebufferSizeWayland(_GLFWwindow* window, int* width, int* height)
 {
     _glfwGetWindowSizeWayland(window, width, height);
+    float scale = _glfw.wl.scaleToMonitor ? window->wl.scale : 1;
     if (width)
-        *width *= window->wl.scale;
+        *width *= scale;
     if (height)
-        *height *= window->wl.scale;
+        *height *= scale;
 }
 
 void _glfwGetWindowFrameSizeWayland(_GLFWwindow* window,
@@ -1504,7 +1506,9 @@ static void relativePointerHandleRelativeMotion(void* data,
         ypos += wl_fixed_to_double(dy);
     }
 
-    _glfwInputCursorPos(window, xpos, ypos);
+    float scale = _glfw.wl.scaleToMonitor ? window->wl.scale : 1;
+
+    _glfwInputCursorPos(window, xpos * scale, ypos * scale);
 }
 
 static const struct zwp_relative_pointer_v1_listener relativePointerListener = {
